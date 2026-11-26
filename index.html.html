@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fermentación del pan | Métodos Numéricos</title>
+<style>
+:root{--bg:#f5f7fb;--paper:#fff;--ink:#172033;--muted:#667085;--line:#e5eaf2;--blue:#315efb;--blue2:#eaf0ff;--teal:#0d9488;--orange:#e58a26;--purple:#805ad5;--shadow:0 12px 35px rgba(28,42,75,.08)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.6}
+header{background:linear-gradient(120deg,#101d3a,#203c78 60%,#315efb);color:white;padding:42px 22px 54px;position:relative;overflow:hidden}
+header:after{content:"";position:absolute;width:340px;height:340px;border:1px solid #ffffff24;border-radius:50%;right:-80px;top:-170px;box-shadow:0 0 0 35px #ffffff0a,0 0 0 75px #ffffff08}
+.wrap{max-width:1120px;margin:auto;padding:0 22px}.eyebrow{text-transform:uppercase;letter-spacing:.16em;font-size:.75rem;font-weight:800;color:#b9caff}
+h1{font-size:clamp(2rem,5vw,3.5rem);line-height:1.08;max-width:850px;margin:14px 0}
+header p{color:#dce6ff;max-width:760px;font-size:1.08rem;margin:16px 0 0}
+.hero-tags{display:flex;gap:9px;flex-wrap:wrap;margin-top:24px}.tag{border:1px solid #ffffff45;border-radius:99px;padding:6px 12px;font-size:.82rem;color:#eef3ff}
+nav{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5;overflow:auto}nav .wrap{display:flex;gap:22px;white-space:nowrap;padding-top:12px;padding-bottom:12px}nav a{color:#475467;text-decoration:none;font-size:.88rem;font-weight:700}nav a:hover{color:var(--blue)}
+main{padding:30px 0 60px}.section{margin:28px 0 42px;scroll-margin-top:76px}.section-head{margin-bottom:18px}.kicker{font-size:.75rem;font-weight:800;color:var(--blue);letter-spacing:.12em;text-transform:uppercase}
+h2{font-size:1.65rem;line-height:1.2;margin:6px 0 8px}h3{font-size:1.05rem;margin:0 0 8px}.sub{color:var(--muted);margin:0;max-width:800px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.card{background:var(--paper);border:1px solid var(--line);border-radius:17px;padding:20px;box-shadow:var(--shadow)}
+.zone{position:relative;overflow:hidden}.zone:before{content:"";position:absolute;top:0;left:0;width:100%;height:4px;background:var(--accent)}.zone .temp{font-size:2rem;font-weight:850;letter-spacing:-.04em}.zone small{color:var(--muted)}.zone p{font-size:.9rem;color:var(--muted);margin:8px 0 0}
+.two{display:grid;grid-template-columns:1.1fr .9fr;gap:16px}.equation{background:#101d3a;color:#f4f7ff;border-radius:15px;padding:20px;margin:12px 0;font-family:Georgia,serif;font-size:1.1rem;overflow:auto}.equation small{display:block;font: .8rem system-ui;color:#b9caff;margin-top:8px}
+.pill{display:inline-block;background:var(--blue2);color:#2448c9;border-radius:7px;padding:3px 8px;font-size:.77rem;font-weight:800}
+ul.clean{padding-left:19px;margin:8px 0;color:#475467}ul.clean li{margin:6px 0}
+.note{border-left:4px solid var(--orange);background:#fff8eb;padding:14px 16px;border-radius:0 10px 10px 0;color:#684514;font-size:.9rem;margin-top:14px}
+.controls{display:grid;grid-template-columns:repeat(4,1fr);gap:13px}.field label{display:block;font-size:.82rem;font-weight:750;margin-bottom:6px;color:#475467}.field input,.field select{width:100%;padding:11px 12px;border:1px solid #d5dce8;border-radius:10px;background:white;color:var(--ink);font:inherit}.field input:focus,.field select:focus{outline:3px solid #315efb22;border-color:var(--blue)}
+.actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:16px}.btn{border:0;border-radius:10px;padding:11px 17px;font-weight:800;font-size:.9rem;cursor:pointer}.primary{background:var(--blue);color:white}.secondary{background:#edf1f8;color:#344054}.btn:hover{filter:brightness(.97)}
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:16px 0}.metric{background:#f8faff;border:1px solid var(--line);border-radius:13px;padding:14px}.metric span{display:block;color:var(--muted);font-size:.78rem}.metric strong{font-size:1.45rem;letter-spacing:-.03em}
+.chartbox{background:white;border:1px solid var(--line);border-radius:15px;padding:14px;margin-top:14px}.chart-title{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap;margin:0 4px 8px}.chart-title span{font-size:.8rem;color:var(--muted)}canvas{width:100%;height:280px;display:block}
+.legend{display:flex;gap:15px;flex-wrap:wrap;font-size:.8rem;color:#475467}.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px}
+.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:12px}table{border-collapse:collapse;width:100%;font-size:.86rem;background:white}th,td{text-align:right;padding:10px 12px;border-bottom:1px solid var(--line);white-space:nowrap}th{background:#f7f9fc;color:#475467;font-size:.78rem}th:first-child,td:first-child{text-align:left}
+.method-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.step{display:flex;gap:12px;margin:12px 0}.num{width:28px;height:28px;flex:0 0 28px;border-radius:50%;background:var(--blue2);color:var(--blue);font-weight:850;display:grid;place-items:center}
+footer{background:#101d3a;color:#dce6ff;padding:28px 0;font-size:.86rem}footer p{margin:4px 0;color:#b9caff}
+.small{font-size:.82rem;color:var(--muted)}.formula-inline{font-family:Georgia,serif;font-size:1.03rem;color:#1d3c8f}
+@media(max-width:800px){.grid{grid-template-columns:1fr}.two,.method-grid{grid-template-columns:1fr}.controls{grid-template-columns:repeat(2,1fr)}.metrics{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:480px){.controls{grid-template-columns:1fr 1fr}.wrap{padding:0 15px}.card{padding:16px}header{padding-top:32px}}
+</style>
+</head>
+<body>
+<header>
+ <div class="wrap">
+  <div class="eyebrow">Proyecto académico · Métodos Numéricos</div>
+  <h1>¿Cómo fermenta el pan en distintas zonas de La Paz?</h1>
+  <p>Un modelo matemático sencillo para estimar el consumo de azúcar, la producción de dióxido de carbono y el aumento del volumen de la masa según la temperatura.</p>
+  <div class="hero-tags"><span class="tag">Centro de La Paz</span><span class="tag">Zona Sur</span><span class="tag">El Alto</span><span class="tag">Euler + Runge-Kutta 4</span></div>
+ </div>
+</header>
+<nav><div class="wrap"><a href="#contexto">Contexto</a><a href="#modelo">Modelo matemático</a><a href="#variables">Variables</a><a href="#simulador">Simulador</a><a href="#metodos">Métodos numéricos</a><a href="#conclusiones">Conclusiones</a></div></nav>
+<main class="wrap">
+<section class="section" id="contexto">
+ <div class="section-head"><div class="kicker">01 · Planteamiento</div><h2>El problema que queremos estudiar</h2><p class="sub">La fermentación es un proceso biológico en el que la levadura consume azúcares y produce dióxido de carbono (CO₂). Ese gas queda atrapado en la masa y contribuye a que aumente su volumen.</p></div>
+ <div class="two">
+  <article class="card"><h3>Pregunta de investigación</h3><p>¿Cómo influye la temperatura ambiental representativa del Centro de La Paz, la Zona Sur y El Alto en la velocidad de fermentación de una masa de pan durante cuatro horas?</p><h3 style="margin-top:18px">Objetivo</h3><p>Construir y resolver numéricamente un modelo simplificado que permita comparar la evolución del azúcar, el CO₂ y el volumen de la masa en los tres escenarios.</p></article>
+  <article class="card"><h3>¿Por qué importa la temperatura?</h3><p>La actividad de la levadura depende de la temperatura. En condiciones moderadas, un aumento de temperatura suele acelerar la fermentación; temperaturas demasiado altas pueden perjudicar la levadura, efecto que este modelo básico no representa.</p><div class="note">Las temperaturas mostradas son valores hipotéticos para demostrar el modelo. En un estudio real se mediría la temperatura junto a la masa en cada panadería, durante el tiempo de fermentación.</div></article>
+ </div>
+ <div class="grid" style="margin-top:16px">
+  <article class="card zone" style="--accent:#315efb"><div class="kicker">Escenario A</div><h3>Centro de La Paz</h3><div class="temp">25 °C</div><small>Temperatura ilustrativa</small><p>Escenario de referencia para comparar los otros dos ambientes.</p></article>
+  <article class="card zone" style="--accent:#0d9488"><div class="kicker">Escenario B</div><h3>Zona Sur</h3><div class="temp">22 °C</div><small>Temperatura ilustrativa</small><p>Se plantea una condición algo más fresca que el escenario de referencia.</p></article>
+  <article class="card zone" style="--accent:#e58a26"><div class="kicker">Escenario C</div><h3>El Alto</h3><div class="temp">16 °C</div><small>Temperatura ilustrativa</small><p>Se plantea una condición más fría para observar una fermentación más lenta.</p></article>
+ </div>
+</section>
+
+<section class="section" id="modelo">
+ <div class="section-head"><div class="kicker">02 · Formulación</div><h2>Modelo matemático propuesto</h2><p class="sub">Usaremos un sistema de dos ecuaciones diferenciales ordinarias. La tercera magnitud, el volumen, se estima a partir del CO₂ producido.</p></div>
+ <div class="card">
+  <h3>1. Velocidad de fermentación según temperatura</h3>
+  <div class="equation">k(T) = k<sub>ref</sub> · Q<sub>10</sub><sup>(T − T<sub>ref</sub>)/10</sup><small>La constante k aumenta o disminuye según la temperatura del escenario.</small></div>
+  <h3>2. Cambio del azúcar disponible</h3>
+  <div class="equation">dS/dt = −k(T) · S<small>Se supone que el azúcar disminuye de forma proporcional a la cantidad que todavía queda.</small></div>
+  <h3>3. Producción y acumulación de CO₂</h3>
+  <div class="equation">dC/dt = Y · k(T) · S − k<sub>p</sub> · C<small>El CO₂ se produce al consumirse el azúcar; una pequeña parte se representa como pérdida.</small></div>
+  <h3>4. Estimación del volumen de la masa</h3>
+  <div class="equation">V(t) = V₀ · [1 + α · C(t)]<small>Es una relación aproximada: más CO₂ retenido se asocia con mayor volumen de masa.</small></div>
+ </div>
+ <div class="note"><b>Alcance del modelo:</b> es un modelo didáctico simplificado, no una receta ni una predicción exacta de panadería. No incluye humedad, tipo de harina, cantidad real de levadura, amasado, pérdida de calor ni la estructura elástica de la masa. Sus parámetros deben calibrarse con mediciones para obtener predicciones reales.</div>
+</section>
+
+<section class="section" id="variables">
+ <div class="section-head"><div class="kicker">03 · Definición</div><h2>Variables y parámetros</h2><p class="sub">Es importante diferenciar las variables que cambian con el tiempo de los parámetros que fijamos para cada simulación.</p></div>
+ <div class="two">
+  <div class="card"><h3>Variables dependientes</h3><div class="table-wrap"><table><thead><tr><th>Símbolo</th><th>Descripción</th><th>Unidad</th></tr></thead><tbody>
+   <tr><td><b>t</b></td><td>Tiempo transcurrido</td><td>horas (h)</td></tr><tr><td><b>S(t)</b></td><td>Azúcar disponible</td><td>g/L</td></tr><tr><td><b>C(t)</b></td><td>CO₂ acumulado</td><td>g/L</td></tr><tr><td><b>V(t)</b></td><td>Volumen estimado de masa</td><td>L</td></tr>
+  </tbody></table></div></div>
+  <div class="card"><h3>Parámetros del modelo</h3><div class="table-wrap"><table><thead><tr><th>Parámetro</th><th>Significado</th><th>Valor base</th></tr></thead><tbody>
+   <tr><td><b>T</b></td><td>Temperatura del escenario</td><td>16–25 °C</td></tr><tr><td><b>kref</b></td><td>Constante a temperatura de referencia</td><td>0.18 h⁻¹</td></tr><tr><td><b>Q10</b></td><td>Factor por cada 10 °C</td><td>2</td></tr><tr><td><b>Tref</b></td><td>Temperatura de referencia</td><td>25 °C</td></tr><tr><td><b>Y</b></td><td>Rendimiento de CO₂ por azúcar</td><td>0.45</td></tr><tr><td><b>kp</b></td><td>Constante de pérdida de CO₂</td><td>0.015 h⁻¹</td></tr><tr><td><b>α</b></td><td>Factor de expansión aproximado</td><td>0.035 L/g</td></tr><tr><td><b>S₀, C₀, V₀</b></td><td>Condiciones iniciales</td><td>20, 0, 1</td></tr>
+  </tbody></table></div></div>
+ </div>
+ <p class="small">Los valores numéricos son supuestos didácticos iniciales, elegidos para ilustrar el procedimiento. No representan parámetros medidos de una receta específica.</p>
+</section>
+
+<section class="section" id="simulador">
+ <div class="section-head"><div class="kicker">04 · Experimento interactivo</div><h2>Simulador de fermentación</h2><p class="sub">Cambia las temperaturas y los parámetros, ejecuta la simulación y compara Euler con Runge-Kutta de cuarto orden. Los cálculos se realizan en esta página.</p></div>
+ <div class="card">
+  <h3>Configuración del experimento</h3>
+  <div class="controls">
+   <div class="field"><label for="tc">Centro de La Paz (°C)</label><input id="tc" type="number" value="25" min="5" max="40" step=".5"></div>
+   <div class="field"><label for="ts">Zona Sur (°C)</label><input id="ts" type="number" value="22" min="5" max="40" step=".5"></div>
+   <div class="field"><label for="te">El Alto (°C)</label><input id="te" type="number" value="16" min="5" max="40" step=".5"></div>
+   <div class="field"><label for="hours">Tiempo total (horas)</label><input id="hours" type="number" value="4" min="1" max="12" step=".5"></div>
+   <div class="field"><label for="step">Paso h (horas)</label><select id="step"><option value="0.2">0.20</option><option value="0.1" selected>0.10</option><option value="0.05">0.05</option><option value="0.01">0.01</option></select></div>
+   <div class="field"><label for="s0">Azúcar inicial S₀ (g/L)</label><input id="s0" type="number" value="20" min="1" max="100" step="1"></div>
+   <div class="field"><label for="kref">k de referencia (h⁻¹)</label><input id="kref" type="number" value=".18" min=".01" max="1" step=".01"></div>
+   <div class="field"><label for="q10">Factor Q₁₀</label><input id="q10" type="number" value="2" min="1" max="4" step=".1"></div>
+  </div>
+  <div class="actions"><button class="btn primary" id="run">Calcular simulación</button><button class="btn secondary" id="reset">Restablecer valores</button><span class="small" id="status" aria-live="polite">Escenarios listos para calcular.</span></div>
+ </div>
+ <div class="metrics">
+  <div class="metric"><span>CO₂ final · Centro</span><strong id="mC">—</strong><span>g/L · RK4</span></div>
+  <div class="metric"><span>Volumen final · Centro</span><strong id="mV">—</strong><span>L · RK4</span></div>
+  <div class="metric"><span>Azúcar restante · Centro</span><strong id="mS">—</strong><span>g/L · RK4</span></div>
+  <div class="metric"><span>Diferencia Euler / RK4</span><strong id="mE">—</strong><span>en CO₂ final del Centro</span></div>
+ </div>
+ <div class="card">
+  <h3>Comparación de resultados finales (método RK4)</h3>
+  <div class="table-wrap"><table id="results"><thead><tr><th>Zona</th><th>Temperatura</th><th>Azúcar S(t)</th><th>CO₂ C(t)</th><th>Volumen V(t)</th><th>Aumento</th></tr></thead><tbody></tbody></table></div>
+ </div>
+ <div class="chartbox"><div class="chart-title"><b>Azúcar disponible durante la fermentación</b><span>g/L · RK4</span></div><canvas id="chartS" width="1000" height="300"></canvas><div class="legend"><span><i class="dot" style="background:#315efb"></i>Centro</span><span><i class="dot" style="background:#0d9488"></i>Zona Sur</span><span><i class="dot" style="background:#e58a26"></i>El Alto</span></div></div>
+ <div class="chartbox"><div class="chart-title"><b>CO₂ producido y acumulado</b><span>g/L · RK4</span></div><canvas id="chartC" width="1000" height="300"></canvas><div class="legend"><span><i class="dot" style="background:#315efb"></i>Centro</span><span><i class="dot" style="background:#0d9488"></i>Zona Sur</span><span><i class="dot" style="background:#e58a26"></i>El Alto</span></div></div>
+ <div class="chartbox"><div class="chart-title"><b>Volumen estimado de la masa</b><span>L · RK4</span></div><canvas id="chartV" width="1000" height="300"></canvas><div class="legend"><span><i class="dot" style="background:#315efb"></i>Centro</span><span><i class="dot" style="background:#0d9488"></i>Zona Sur</span><span><i class="dot" style="background:#e58a26"></i>El Alto</span></div></div>
+ <div class="chartbox"><div class="chart-title"><b>Euler vs. Runge-Kutta 4</b><span>Centro · CO₂ final</span></div><p id="methodCompare" class="small">Ejecuta la simulación para ver la comparación.</p></div>
+ <p class="small">Nota: el volumen es una estimación proporcional al CO₂ acumulado, no una medición física directa. La expansión real depende de cuánto gas retiene la masa.</p>
+</section>
+
+<section class="section" id="metodos">
+ <div class="section-head"><div class="kicker">05 · Resolución numérica</div><h2>¿Cómo resolvemos las ecuaciones?</h2><p class="sub">Como las ecuaciones describen cambios continuos y no siempre tenemos una solución práctica para todos los modelos, aproximamos sus valores en pequeños pasos de tiempo.</p></div>
+ <div class="method-grid">
+  <article class="card"><span class="pill">Método 1</span><h3 style="margin-top:10px">Euler explícito</h3><div class="equation">y<sub>n+1</sub> = y<sub>n</sub> + h · f(t<sub>n</sub>, y<sub>n</sub>)</div><p>Utiliza la pendiente al inicio de cada intervalo para estimar el siguiente valor. Es sencillo, pero puede acumular más error si el paso es grande.</p></article>
+  <article class="card"><span class="pill">Método 2</span><h3 style="margin-top:10px">Runge-Kutta de cuarto orden (RK4)</h3><div class="equation">y<sub>n+1</sub> = y<sub>n</sub> + (h/6)(k₁ + 2k₂ + 2k₃ + k₄)</div><p>Calcula cuatro pendientes dentro del intervalo y las combina. Normalmente ofrece una aproximación más precisa que Euler con el mismo paso.</p></article>
+ </div>
+ <div class="card" style="margin-top:16px"><h3>Pasos del procedimiento</h3>
+  <div class="step"><span class="num">1</span><div><b>Definir los datos iniciales.</b><br><span class="small">Establecer S₀, C₀, V₀, temperatura y tiempo total.</span></div></div>
+  <div class="step"><span class="num">2</span><div><b>Calcular k(T).</b><br><span class="small">Ajustar la velocidad de fermentación de acuerdo con la temperatura del escenario.</span></div></div>
+  <div class="step"><span class="num">3</span><div><b>Elegir el paso h.</b><br><span class="small">Dividir el tiempo en intervalos pequeños, por ejemplo 0.1 horas.</span></div></div>
+  <div class="step"><span class="num">4</span><div><b>Aplicar Euler y RK4.</b><br><span class="small">Calcular los valores de azúcar y CO₂ en cada intervalo.</span></div></div>
+  <div class="step"><span class="num">5</span><div><b>Calcular el volumen y comparar.</b><br><span class="small">Usar la concentración de CO₂ para estimar el volumen y comparar los métodos y las zonas.</span></div></div>
+ </div>
+</section>
+
+<section class="section" id="conclusiones">
+ <div class="section-head"><div class="kicker">06 · Interpretación</div><h2>Conclusiones que permite obtener el modelo</h2></div>
+ <div class="card">
+  <ul class="clean">
+   <li>La temperatura modifica la constante k(T), por lo que cambia la velocidad a la que disminuye el azúcar y se produce CO₂.</li>
+   <li>En los escenarios planteados, una temperatura mayor dentro del rango supuesto produce una fermentación más rápida.</li>
+   <li>La producción de CO₂ se relaciona con el aumento estimado del volumen de la masa.</li>
+   <li>RK4 suele aproximar mejor la solución que Euler para un mismo paso; la diferencia puede observarse en la comparación del simulador.</li>
+   <li>Para afirmar qué zona fermenta realmente más rápido, se necesitan mediciones de temperatura y experimentos controlados en panaderías de las tres zonas.</li>
+  </ul>
+  <div class="note"><b>Conclusión central:</b> los métodos numéricos permiten aproximar la evolución de un proceso de fermentación y comparar escenarios. El modelo no demuestra por sí solo que una zona real tenga determinada velocidad; muestra qué ocurriría bajo los parámetros y temperaturas introducidos.</div>
+ </div>
+</section>
+</main>
+<footer><div class="wrap"><b>Proyecto de Métodos Numéricos</b><p>Modelo didáctico de fermentación del pan · Centro de La Paz, Zona Sur y El Alto</p><p>Herramientas: HTML, CSS y JavaScript · Simulación Euler y Runge-Kutta 4</p></div></footer>
+<script>
+const $=id=>document.getElementById(id);
+const colors=['#315efb','#0d9488','#e58a26'];
+const names=['Centro de La Paz','Zona Sur','El Alto'];
+const defaults={tc:25,ts:22,te:16,hours:4,step:'0.1',s0:20,kref:.18,q10:2};
+function deriv(y,k,kp,Y){let S=y[0],C=y[1];return [-k*S,Y*k*S-kp*C]}
+function add(y,ks,h){return y.map((v,i)=>v+h*ks[i])}
+function euler(y,k,h,kp,Y){return add(y,deriv(y,k,kp,Y),h)}
+function rk4(y,k,h,kp,Y){
+ let f1=deriv(y,k,kp,Y),f2=deriv(add(y,f1,h/2),k,kp,Y),f3=deriv(add(y,f2,h/2),k,kp,Y),f4=deriv(add(y,f3,h),k,kp,Y);
+ return y.map((v,i)=>v+h*(f1[i]+2*f2[i]+2*f3[i]+f4[i])/6);
+}
+function simulate(T,method,p){
+ const n=Math.ceil(p.hours/p.h),h=p.hours/n,k=p.kref*Math.pow(p.q10,(T-25)/10),kp=.015,Y=.45;
+ let y=[p.s0,0],out=[{t:0,S:y[0],C:y[1],V:1}],t=0;
+ for(let i=0;i<n;i++){y=method==='euler'?euler(y,k,h,kp,Y):rk4(y,k,h,kp,Y);y[0]=Math.max(0,y[0]);y[1]=Math.max(0,y[1]);t=(i+1)*h;out.push({t,S:y[0],C:y[1],V:1*(1+.035*y[1])})}
+ return out;
+}
+function readParams(){
+ let p={tc:+$('tc').value,ts:+$('ts').value,te:+$('te').value,hours:+$('hours').value,h:+$('step').value,s0:+$('s0').value,kref:+$('kref').value,q10:+$('q10').value};
+ if(Object.values(p).some(v=>!Number.isFinite(v))||p.hours<=0||p.h<=0||p.s0<=0||p.kref<=0||p.q10<1||[p.tc,p.ts,p.te].some(t=>t<5||t>40)||p.hours>12||p.s0>100||p.kref>1||p.q10>4){throw Error('Revisa los datos: usa temperaturas de 5 a 40 °C y valores positivos dentro de los límites indicados.')}
+ return p;
+}
+function fmt(x,n=3){return Number(x).toFixed(n)}
+function drawChart(canvasId,series,key,yLabel){
+ const canvas=$(canvasId),ctx=canvas.getContext('2d'),w=canvas.width,h=canvas.height,pad={l:62,r:22,t:18,b:42};
+ ctx.clearRect(0,0,w,h);
+ let all=series.flatMap(s=>s.data.map(d=>d[key])),max=Math.max(...all)*1.12,min=Math.min(0,...all),range=max-min||1;
+ const xMax=series[0].data[series[0].data.length-1].t;
+ const X=t=>pad.l+(t/xMax)*(w-pad.l-pad.r),Y=v=>h-pad.b-((v-min)/range)*(h-pad.t-pad.b);
+ ctx.font='12px system-ui';ctx.strokeStyle='#e8edf5';ctx.fillStyle='#667085';ctx.lineWidth=1;
+ for(let i=0;i<=4;i++){let v=min+(range*i/4),yy=Y(v);ctx.beginPath();ctx.moveTo(pad.l,yy);ctx.lineTo(w-pad.r,yy);ctx.stroke();ctx.fillText(v.toFixed(1),8,yy+4)}
+ for(let i=0;i<=4;i++){let t=xMax*i/4,xx=X(t);ctx.fillText(t.toFixed(1),xx-10,h-14)}
+ ctx.fillStyle='#475467';ctx.fillText(yLabel,8,13);ctx.fillText('Tiempo (h)',w/2-30,h-2);
+ series.forEach((s,j)=>{ctx.beginPath();ctx.strokeStyle=colors[j];ctx.lineWidth=3;s.data.forEach((d,i)=>{let x=X(d.t),y=Y(d[key]);if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y)});ctx.stroke()});
+}
+function run(){
+ try{
+  const p=readParams(),temps=[p.tc,p.ts,p.te],results=temps.map((T,i)=>({name:names[i],T,data:simulate(T,'rk4',p),euler:simulate(T,'euler',p)}));
+  const body=$('results').querySelector('tbody');body.innerHTML='';
+  results.forEach(r=>{let d=r.data.at(-1),tr=document.createElement('tr');[r.name,fmt(r.T,1)+' °C',fmt(d.S),fmt(d.C),fmt(d.V),fmt((d.V-1)*100,1)+' %'].forEach(v=>{let td=document.createElement('td');td.textContent=v;tr.appendChild(td)});body.appendChild(tr)});
+  const c=results[0].data.at(-1),e=results[0].euler.at(-1),diff=Math.abs(e.C-c.C);
+  $('mC').textContent=fmt(c.C);$('mV').textContent=fmt(c.V);$('mS').textContent=fmt(c.S);$('mE').textContent=fmt(diff,4);
+  $('methodCompare').textContent=`Centro: Euler estima ${fmt(e.C)} g/L de CO₂ y RK4 estima ${fmt(c.C)} g/L. Diferencia absoluta: ${fmt(diff,5)} g/L. Con un paso más pequeño, normalmente la diferencia disminuye.`;
+  drawChart('chartS',results,'S','Azúcar (g/L)');drawChart('chartC',results,'C','CO₂ (g/L)');drawChart('chartV',results,'V','Volumen (L)');
+  $('status').textContent='Simulación completada correctamente.';
+ }catch(err){$('status').textContent=err.message;alert(err.message)}
+}
+$('run').addEventListener('click',run);
+$('reset').addEventListener('click',()=>{Object.entries(defaults).forEach(([k,v])=>$(k).value=v);run()});
+run();
+</script>
+</body>
+</html>
